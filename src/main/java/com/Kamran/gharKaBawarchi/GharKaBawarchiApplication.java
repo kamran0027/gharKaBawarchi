@@ -1,4 +1,4 @@
-package com.Kamasn.gharKaBawarchi;
+package com.Kamran.gharKaBawarchi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
