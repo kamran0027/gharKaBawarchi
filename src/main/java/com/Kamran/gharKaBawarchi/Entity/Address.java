@@ -4,8 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,19 +15,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Cook {
+public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cookId;
-    private String cookName;
-    private String specialization;
-    private int experienceYears;
-    private double rating;
-    private String contactInfo;
+    private Long addressId;
+    private String street;
+    private String city;
+    private String state;
+    private String zipCode;
+    private String country;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
-
-
+    @OneToOne(mappedBy = "address")
+    private Users user;
 }
