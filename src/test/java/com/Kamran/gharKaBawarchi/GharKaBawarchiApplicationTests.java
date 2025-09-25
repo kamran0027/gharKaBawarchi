@@ -1,4 +1,4 @@
-package com.Kamasn.gharKaBawarchi;
+package com.Kamran.gharKaBawarchi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
