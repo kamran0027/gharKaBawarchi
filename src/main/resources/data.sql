@@ -1,0 +1,14 @@
+INSERT into city (city_name)
+VALUES ('New York'),
+       ('Los Angeles'),
+       ('Chicago'),
+       ('Houston'),
+       ('Phoenix');
+
+INSERT into cook (experience_years,rating,city_id,contact_info,cook_name,specialization)
+VALUES(5,4.5,1,'123-456-7890','John Doe','Italian Cuisine'),
+         (10,4.8,1,'987-654-3210','Jane Smith','Pastry Chef'),
+         (3,4.2,3,'555-123-4567','Mike Johnson','Sushi Chef'),
+         (7,4.7,3,'444-555-6666','Emily Davis','Vegan Cuisine'),
+         (2,4.0,5,'222-333-4444','Chris Brown','BBQ Specialist');
+
