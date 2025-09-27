@@ -16,10 +16,10 @@ public class UserService {
     public Boolean processLogin(LogInDto logInDto){
         Users users=userRepository.findByUserEmailIgnoreCase(logInDto.getUserName());
         if(users!=null){
-            if(users.getPassword()==logInDto.getPassword()){
+            if(users.getPassword().equals(logInDto.getPassword())){
                 return true;
             }
-            return true;
+            return false;
         }
         return false;
     }

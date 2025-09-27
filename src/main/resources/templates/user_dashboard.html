@@ -15,12 +15,16 @@
         <th>specialization</th>
         <th>contact info</th>
         <th>city name</th>
+        <th>Details</th>
+        <th></th>
     </tr>
     <tr th:each="cook : ${cooks}">
         <td th:text="${cook.cookName}"></td>
         <td th:text="${cook.specialization}"></td>
         <td th:text="${cook.contactInfo}"></td>
         <td th:text="${cook.city.cityName}"></td>
+        <td><a th:href="@{/home/details}">view</a></td>
+        <td><a th:href="@{/home/book}">book</a></td>
     </tr>
 </table>
 
