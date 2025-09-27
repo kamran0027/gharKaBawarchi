@@ -12,3 +12,7 @@ VALUES(5,4.5,1,'123-456-7890','John Doe','Italian Cuisine'),
          (7,4.7,3,'444-555-6666','Emily Davis','Vegan Cuisine'),
          (2,4.0,5,'222-333-4444','Chris Brown','BBQ Specialist');
 
+INSERT into users (city_id,district,password,phone_number,user_email)
+VALUES(1,'Gopalganj','password123','1234567890','test@gmail.com'),
+       (3,'Gopalganj','password456','0987654321','kamran@gmail.com'),
+       (3,'Gopalganj','password789','1122334455','dumy@gmail.com');

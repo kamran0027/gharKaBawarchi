@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cooks List</title>
+</head>
+<body>
+<h2>welcome to Ghar ka bawarchi</h2>
+<h2 th:text="${user.userEmail}"></h2>
+
+<h3>my city is <span th:text="${user.city.cityName}"></span></h3>
+
+<table border="1">
+    <tr>
+        <th>Cook Name</th>
+        <th>specialization</th>
+        <th>contact info</th>
+        <th>city name</th>
+    </tr>
+    <tr th:each="cook : ${cooks}">
+        <td th:text="${cook.cookName}"></td>
+        <td th:text="${cook.specialization}"></td>
+        <td th:text="${cook.contactInfo}"></td>
+        <td th:text="${cook.city.cityName}"></td>
+    </tr>
+</table>
+
+<a th:href="@{/login}">logOut</a>
+</body>
+</html>

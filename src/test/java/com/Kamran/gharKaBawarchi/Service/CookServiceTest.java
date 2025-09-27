@@ -19,7 +19,7 @@ public class CookServiceTest{
     
     @Test
     public void testFindByCity(){
-        List<Cook> cooks=cookService.getAllCookByCity("New York");
+        List<Cook> cooks=cookService.getAllCookByCity(City city);
         cooks.forEach(cook -> log.info("Cook: {}", cook));
         System.out.println("-------------------");
 

@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,9 +29,9 @@ public class Users {
     private String phoneNumber;
     private String district;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    // @OneToOne
+    // @JoinColumn(name = "addres_id")
+    // private Addres address;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
