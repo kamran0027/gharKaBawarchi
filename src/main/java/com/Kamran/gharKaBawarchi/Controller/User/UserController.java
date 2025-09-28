@@ -1,15 +1,18 @@
 package com.Kamran.gharKaBawarchi.Controller.User;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.Kamran.gharKaBawarchi.Dto.BookingDto;
 import com.Kamran.gharKaBawarchi.Dto.LogInDto;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Users;
@@ -55,6 +58,27 @@ public class UserController {
             return "user_dashboard";
         }
         return "redirect:/login?error=true";
+    }
+
+    @GetMapping("/home/book/{cookId}")
+    public String bookCook(@PathVariable Long cookId, Model model){
+        Optional<Cook> cook=cookService.getCookById(cookId);
+        model.addAttribute("cook", cook.get());
+        return "booking_page";
+        
+    }
+
+    @PostMapping("/home/book/confirm")
+    public String confirmBooking(BookingDto bookingDto,Model model, RedirectAttributes redirectAttributes){
+
+        Boolean isBooked=userService.createBooking(bookingDto, bookingDto.getCookId());
+        if(isBooked){
+            redirectAttributes.addFlashAttribute("message", "Booking successful!");
+            return "redirect:/home";
+        }else{
+            redirectAttributes.addFlashAttribute("error", "Booking failed. Please try again.");
+            return "redirect:/home/book/"+bookingDto.getCookId();
+        }
     }
 
 }
