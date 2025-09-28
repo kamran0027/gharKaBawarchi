@@ -48,6 +48,7 @@ public class UserService {
         booking.setCook(cookService.getCookById(id).get());
         booking.setStatus(BookingStatus.PENDING);
         return true;
+        
     }
 
 }
