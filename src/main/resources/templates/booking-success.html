@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Booking Successful</title></head>
+<body>
+<h2>Booking Successful!</h2>
+<p>Thank you, <span th:text="${booking.customerName}"></span>, for your booking.</p>
+<p>Cook: <span th:text="${cook.cookName}"></span></p>
+
+<!-- <h3>Selected Items:</h3>
+<ul>
+    <li th:each="item : ${foodItems}"
+        th:text="${item.itemName + ' - ₹' + item.pricePerPerson + '/person'}"></li>
+</ul> -->
+
+<p>Number of People: <span th:text="${booking.numberOfPeople}"></span></p>
+<p>Total Amount: ₹<span th:text="${booking.totalAmount}"></span></p>
+
+<a th:href="@{/booking/all}">View All Bookings</a>
+</body>
+</html>
