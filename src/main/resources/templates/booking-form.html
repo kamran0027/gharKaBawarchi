@@ -13,13 +13,17 @@
             });
 
             document.getElementById("totalAmount").innerText = "Total: ₹" + total;
+
+            // Update hidden totalAmount field
+
+            document.getElementById("totalAmountInput").value=total;
         }
     </script>
 </head>
 <body>
 <h2 th:text="'Book Cook: ' + ${cook.cookName}"></h2>
 
-<form th:action="@{/book/submit}" th:object="${bookingDto}" method="post">
+<form th:action="@{/home/book/submit}" th:object="${bookingDto}" method="post">
     <input type="hidden" th:field="*{cookId}" />
 
     <div>
@@ -41,7 +45,8 @@
         <label>Number of People:</label>
         <input type="number" id="numberOfPeople" th:field="*{numberOfPeople}" min="1" oninput="calculateTotal()"/>
     </div>
-    <p id="totalAmount">Total: ₹0</p>
+    <p id="totalAmount" >Total: ₹0</p>
+    <input type="hidden" id="totalAmountInput" th:field="*{totalAmount}"/>
 
     <button type="submit">Book Now</button>
 </form>

@@ -16,3 +16,15 @@ INSERT into users (city_id,district,password,phone_number,user_email)
 VALUES(1,'Gopalganj','password123','1234567890','test@gmail.com'),
        (3,'Gopalganj','password456','0987654321','kamran@gmail.com'),
        (3,'Gopalganj','password789','1122334455','dumy@gmail.com');
+
+INSERT into menu(price,cook_id,menu_name)
+VALUES(250.0,1,'Pasta Primavera'),
+      (300.0,1,'Tiramisu'),
+      (200.0,1,'Chocolate Cake'),
+      (150.0,1,'Croissants'),
+      (400.0,1,'Sushi Platter'),
+      (350.0,3,'Miso Soup'),
+      (220.0,4,'Vegan Buddha Bowl'),
+      (180.0,4,'Avocado Toast'),
+      (500.0,5,'BBQ Ribs'),
+      (450.0,5,'Grilled Corn on the Cob');

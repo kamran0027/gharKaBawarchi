@@ -24,7 +24,7 @@
         <td th:text="${cook.contactInfo}"></td>
         <td th:text="${cook.city.cityName}"></td>
         <td><a th:href="@{/home/details}">view</a></td>
-        <td><a th:href="@{/home/book}">book</a></td>
+        <td><a th:href="@{/home/book/{id}(id=${cook.cookId})}">book</a></td>
     </tr>
 </table>
 

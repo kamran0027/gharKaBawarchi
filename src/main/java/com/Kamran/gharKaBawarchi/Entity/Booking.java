@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,15 +30,18 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-    private String details;
-    private String date;
-    private String time;
+    
     private Double totalAmount;
     private String customerName;
-    private String customerContact;
-    private String address;
-    private String specialInstructions;
-    private List<String> menuItems;
+    private int numberOfPeople;
+
+    @ManyToMany
+    @JoinTable(
+        name = "booking_food_item",
+        joinColumns = @JoinColumn(name="booking_id"),
+        inverseJoinColumns = @JoinColumn(name="menu_id")
+    )
+    private List<Menu> menuItems;
 
     @ManyToOne
     @JoinColumn(name = "cook_id")

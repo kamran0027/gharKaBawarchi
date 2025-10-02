@@ -40,4 +40,8 @@ public class Cook {
     private List<Booking> bookings;
 
 
+    @OneToMany(mappedBy = "cook", cascade =CascadeType.ALL)
+    private List<Menu> menuItems;
+
+
 }

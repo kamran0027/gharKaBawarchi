@@ -1,5 +1,7 @@
 package com.Kamran.gharKaBawarchi.Dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDto {
-    Long cookId;
-    String bookingDate;
-    String bookingTime;
-    String specialRequests;
-    // Add other relevant fields
-
+    private Long cookId;
+    private Double totalAmount;
+    private String customerName;
+    private int numberOfPeople;
+    private List<Long> foodItemIds;
+    
 }
