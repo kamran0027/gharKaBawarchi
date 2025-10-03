@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Kamran.gharKaBawarchi.Dto.LogInDto;
+import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Users;
 import com.Kamran.gharKaBawarchi.Service.CookService;
@@ -55,6 +56,13 @@ public class UserController {
             return "user_dashboard";
         }
         return "redirect:/login?error=true";
+    }
+
+    @GetMapping("/home/order")
+    public String viewOrder(Model model){
+        List<Booking> booking=userService.getAllOrderByUserId(1L);
+        model.addAttribute("bookings", booking);
+        return "user_order";
     }
 
     // @GetMapping("/home/book/{cookId}")
