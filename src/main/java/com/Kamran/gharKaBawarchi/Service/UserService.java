@@ -1,10 +1,14 @@
 package com.Kamran.gharKaBawarchi.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Kamran.gharKaBawarchi.Dto.LogInDto;
+import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.Users;
+import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.UserRepository;
 
 @Service
@@ -15,6 +19,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     UserService(CookService cookService) {
         this.cookService = cookService;
@@ -36,6 +43,9 @@ public class UserService {
         return users;
     }
 
-    
+    public List<Booking> getAllOrderByUserId(Long userId){
+        return bookingRepository.findBookingsByUserId(userId);
+
+    } 
 
 }
