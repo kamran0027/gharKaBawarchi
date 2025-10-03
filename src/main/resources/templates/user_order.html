@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Bookings</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        h2 { margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <h1>User Bookings</h1>
+
+    <div th:if="${#lists.isEmpty(bookings)}">
+        <p>No bookings found for this user.</p>
+    </div>
+
+    <div th:each="booking : ${bookings}">
+        <h2>Booking ID: <span th:text="${booking.Id}"></span></h2>
+        <p>Status: <span th:text="${booking.status}"></span></p>
+        <p>Total Amount: ₹<span th:text="${booking.totalAmount}"></span></p>
+        <p>Customer Name: <span th:text="${booking.customerName}"></span></p>
+        <p>Number of People: <span th:text="${booking.numberOfPeople}"></span></p>
+        <p>Cook: <span th:text="${booking.cook.cookName}"></span></p>
+        <!-- <p>User Email: <span th:text="${booking.users.userEmail}"></span></p> -->
+
+        <h3>Menu Items:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Menu ID</th>
+                    <th>Menu Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="menu : ${booking.menuItems}">
+                    <td th:text="${menu.menuId}"></td>
+                    <td th:text="${menu.menuName}"></td>
+                    <td th:text="${menu.price}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
