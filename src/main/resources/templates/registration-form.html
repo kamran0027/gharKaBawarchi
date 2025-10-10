@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Registration</title>
+</head>
+<body>
+<h2>User Registration</h2>
+<div th:if="${error}">
+    <p th:text="${error}" style="color: red;"></p>
+</div>
+
+<form th:action="@{/register}" th:object="${registrationDTO}" method="post">
+
+    <label>Name:</label>
+    <input type="text" th:field="*{fullName}" /><br><br>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{Email}" /><br><br>
+
+    <label>Password:</label>
+    <input type="password" th:field="*{password}" /><br><br>
+    <label>Phone No:</label>
+    <input type="number" th:field="*{PhoneNumber}" /><br><br>
+
+    <label>Select City for Service</label>
+        <select th:field="*{cityId}">
+            <option value="">-- Select City --</option>
+            <option th:each="c:${allCitys}"
+                    th:value="${c.cityId}"
+                    th:text="${c.cityName}">
+            </option>
+        </select>
+    <h3>Address</h3>
+    <label>Street:</label>
+    <input type="text" th:field="*{addressDto.street}" /><br><br>
+
+    <label>City:</label>
+    <input type="text" th:field="*{addressDto.city}" /><br><br>
+
+    <label>State:</label>
+    <input type="text" th:field="*{addressDto.state}" /><br><br>
+
+    <label>Zip Code:</label>
+    <input type="text" th:field="*{addressDto.zipCode}" /><br><br>
+
+    <label>Country:</label>
+    <input type="text" th:field="*{addressDto.country}" /><br><br>
+
+    <button type="submit">Register</button>
+</form>
+
+</body>
+</html>
