@@ -11,9 +11,22 @@
 </nav>
 
 <h2>welcome to Ghar ka bawarchi</h2>
-<h2 th:text="${user.userEmail}"></h2>
+<h2>Hello , <span th:text="${user.fullName}"></span></h2>
 
-<h3>my city is <span th:text="${user.city.cityName}"></span></h3>
+<h3>my city is <span th:text="${user.city.cityName}"></span></h3><br><br>
+<form th:action="@{/home/change-city}" th:object="${cityDto}" method="post">
+    <label>change city</label>
+    <select th:field="*{cityId}">
+        <option value="">-- Select City --</option>
+        <option th:each="c:${allCitys}"
+                th:value="${c.cityId}"
+                th:text="${c.cityName}">
+        </option>
+    </select>
+    <button type="submit">Change City</button>
+</form>
+<br>
+<br>
 
 
 <table border="1">
