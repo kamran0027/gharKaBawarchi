@@ -47,7 +47,7 @@ public class BookingService {
         // String userEmail=auth.getName();
         // Users users=userRepository.findByUserEmailIgnoreCase(userEmail);
         // booking.setUsers(users);
-        Users user=userService.getUser("test@gmail.com");
+        Users user=userService.getUser("kamranahmadmd463@gmail.com");
         booking.setUsers(user);
         // setting the cook to booking 
         Optional<Cook> cook=cookRepository.findById(bookingDto.getCookId());
