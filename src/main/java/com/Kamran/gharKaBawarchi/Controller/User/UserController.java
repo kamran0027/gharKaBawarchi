@@ -20,6 +20,7 @@ import com.Kamran.gharKaBawarchi.Service.CityService;
 import com.Kamran.gharKaBawarchi.Service.CookService;
 import com.Kamran.gharKaBawarchi.Service.UserService;
 
+
 @Controller
 @RequestMapping
 public class UserController {
@@ -42,7 +43,21 @@ public class UserController {
         model.addAttribute("loginDto", new LogInDto());
         return "login";
     }
-
+    @GetMapping("/home")
+    public String getMethodName(Model model){
+        // Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+        // String userEmail=auth.getName();
+        // Users users=userRepository.findByUserEmailIgnoreCase(userEmail);
+        // booking.setUsers(users);
+        Users user=userService.getUser("kamranahmadmd463@gmail.com");
+        model.addAttribute("user", user);
+        model.addAttribute("cityDto",new CityDto());
+        model.addAttribute("allCitys", cityService.getAllCitys());
+        List<Cook> cooks=cookService.getAllCookByCity(user.getCity());
+        model.addAttribute("cooks", cooks);
+        return"user_dashboard";
+    }
+    
     @PostMapping("/home")
     public String procesLogin(LogInDto logInDto, Model model, RedirectAttributes redirectAttributes){
         System.out.println("********************************");
