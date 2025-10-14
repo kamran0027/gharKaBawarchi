@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Menu;
 import com.Kamran.gharKaBawarchi.Respository.MenuRepository;
 
@@ -15,8 +14,12 @@ public class MenuService {
     @Autowired
     private MenuRepository menuRepository;
 
-    public List<Menu> getMenuByCook(Cook cook) {
-        return menuRepository.findByCook(cook);
+    public List<Menu> getMenuByCook(Long cookId) {
+        return menuRepository.findMenusByCookId(cookId);
         
+    }
+
+    public List<Menu> getAllMenuItems() {
+        return menuRepository.findAll();
     }
 }

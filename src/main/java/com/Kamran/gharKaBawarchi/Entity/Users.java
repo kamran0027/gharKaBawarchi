@@ -42,7 +42,7 @@ public class Users {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users", cascade=CascadeType.ALL)
     private List<Booking> bookings;
 
 }

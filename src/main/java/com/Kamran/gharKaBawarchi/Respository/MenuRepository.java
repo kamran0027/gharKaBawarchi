@@ -3,14 +3,18 @@ package com.Kamran.gharKaBawarchi.Respository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Menu;
 
 @Repository
 public interface MenuRepository extends
 JpaRepository<Menu,Long>{
-    List<Menu> findByCook(Cook cook);
+    // List<Menu> findByCooks(Cook cook);
+    // List<Menu> findByCook_cookId(Long id);
+
+    @Query("SELECT m FROM Menu m JOIN m.cooks c WHERE c.id = :cookId")
+    List<Menu> findMenusByCookId(Long cookId);
 
 }

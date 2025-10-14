@@ -35,7 +35,7 @@ public class BookingController {
         BookingDto bookingDto=new BookingDto();
         bookingDto.setCookId(cookId);
         model.addAttribute("cook", cook);
-        model.addAttribute("foodItems",menuService.getMenuByCook(cook));
+        model.addAttribute("foodItems",menuService.getMenuByCook(cookId));
         model.addAttribute("bookingDto", bookingDto);
         return "booking-form";
     }

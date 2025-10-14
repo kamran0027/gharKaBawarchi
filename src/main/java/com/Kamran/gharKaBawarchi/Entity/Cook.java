@@ -2,12 +2,13 @@ package com.Kamran.gharKaBawarchi.Entity;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -30,17 +31,24 @@ public class Cook {
     private String specialization;
     private int experienceYears;
     private double rating;
+    private String cookEmail;
+    private String cookPassword;
     private String contactInfo;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToMany(mappedBy = "cook", cascade =CascadeType.ALL)
+    @OneToMany(mappedBy = "cook")
     private List<Booking> bookings;
 
 
-    @OneToMany(mappedBy = "cook", cascade =CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+        name = "cook_menu",
+        joinColumns = @JoinColumn(name = "cook_id"),
+        inverseJoinColumns = @JoinColumn(name = "menu_id")
+    )
     private List<Menu> menuItems;
 
 

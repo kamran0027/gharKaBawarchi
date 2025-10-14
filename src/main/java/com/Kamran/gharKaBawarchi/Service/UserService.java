@@ -45,7 +45,8 @@ public class UserService {
     }
 
     public List<Booking> getAllOrderByUserId(Long userId){
-        return bookingRepository.findBookingsByUserId(userId);
+        return bookingRepository.findByUsers(userRepository.findById(userId).get());
+        //return bookingRepository.findBookingsByUserId(userId);
 
     }
 

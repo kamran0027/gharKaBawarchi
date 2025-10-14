@@ -1,6 +1,7 @@
 package com.Kamran.gharKaBawarchi.Respository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import com.Kamran.gharKaBawarchi.Entity.Cook;
 public interface CookRepository  extends JpaRepository<Cook,Long>{
     // List<Cook> findByCityName(String cityName);
     List<Cook> findByCity(City city);
+    Optional<Cook> findByCookEmail(String email);
 
 
 }

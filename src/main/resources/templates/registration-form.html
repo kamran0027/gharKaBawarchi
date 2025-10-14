@@ -2,52 +2,84 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Registration</title>
+    <!-- Add Bootstrap CDN for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h2>User Registration</h2>
-<div th:if="${error}">
-    <p th:text="${error}" style="color: red;"></p>
-</div>
+    <!-- Container for the form -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">User Registration</h2>
 
-<form th:action="@{/register}" th:object="${registrationDTO}" method="post">
+        <!-- Error message display -->
+        <div th:if="${error}">
+            <p th:text="${error}" style="color: red;" class="text-center mb-3"></p>
+        </div>
 
-    <label>Name:</label>
-    <input type="text" th:field="*{fullName}" /><br><br>
+        <!-- Registration Form -->
+        <form th:action="@{/register}" th:object="${registrationDTO}" method="post">
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Name:</label>
+                <input type="text" th:field="*{fullName}" id="fullName" class="form-control" placeholder="Enter your full name" required />
+            </div>
 
-    <label>Email:</label>
-    <input type="email" th:field="*{Email}" /><br><br>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" th:field="*{Email}" id="email" class="form-control" placeholder="Enter your email" required />
+            </div>
 
-    <label>Password:</label>
-    <input type="password" th:field="*{password}" /><br><br>
-    <label>Phone No:</label>
-    <input type="number" th:field="*{PhoneNumber}" /><br><br>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="Enter your password" required />
+            </div>
 
-    <label>Select City for Service</label>
-        <select th:field="*{cityId}">
-            <option value="">-- Select City --</option>
-            <option th:each="c:${allCitys}"
-                    th:value="${c.cityId}"
-                    th:text="${c.cityName}">
-            </option>
-        </select>
-    <h3>Address</h3>
-    <label>Street:</label>
-    <input type="text" th:field="*{addressDto.street}" /><br><br>
+            <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Phone No:</label>
+                <input type="number" th:field="*{PhoneNumber}" id="phoneNumber" class="form-control" placeholder="Enter your phone number" required />
+            </div>
 
-    <label>City:</label>
-    <input type="text" th:field="*{addressDto.city}" /><br><br>
+            <div class="mb-3">
+                <label for="cityId" class="form-label">Select City for Service</label>
+                <select th:field="*{cityId}" id="cityId" class="form-select" required>
+                    <option value="">-- Select City --</option>
+                    <option th:each="c:${allCitys}" th:value="${c.cityId}" th:text="${c.cityName}"></option>
+                </select>
+            </div>
 
-    <label>State:</label>
-    <input type="text" th:field="*{addressDto.state}" /><br><br>
+            <h3 class="mt-4">Address</h3>
 
-    <label>Zip Code:</label>
-    <input type="text" th:field="*{addressDto.zipCode}" /><br><br>
+            <div class="mb-3">
+                <label for="street" class="form-label">Street:</label>
+                <input type="text" th:field="*{addressDto.street}" id="street" class="form-control" placeholder="Enter your street address" required />
+            </div>
 
-    <label>Country:</label>
-    <input type="text" th:field="*{addressDto.country}" /><br><br>
+            <div class="mb-3">
+                <label for="city" class="form-label">City:</label>
+                <input type="text" th:field="*{addressDto.city}" id="city" class="form-control" placeholder="Enter your city" required />
+            </div>
 
-    <button type="submit">Register</button>
-</form>
+            <div class="mb-3">
+                <label for="state" class="form-label">State:</label>
+                <input type="text" th:field="*{addressDto.state}" id="state" class="form-control" placeholder="Enter your state" required />
+            </div>
 
+            <div class="mb-3">
+                <label for="zipCode" class="form-label">Zip Code:</label>
+                <input type="text" th:field="*{addressDto.zipCode}" id="zipCode" class="form-control" placeholder="Enter your zip code" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="country" class="form-label">Country:</label>
+                <input type="text" th:field="*{addressDto.country}" id="country" class="form-control" placeholder="Enter your country" required />
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

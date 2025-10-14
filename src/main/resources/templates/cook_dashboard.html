@@ -16,13 +16,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/home}">Home</a>
+                        <a class="nav-link" th:href="@{/cook/home}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/home/order}">My Order</a>
+                        <a class="nav-link" th:href="@{/cook/home/order}">view  Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/home/profile}">Profile</a>
+                        <a class="nav-link" th:href="@{/cook/home/profile}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/cook/login}">logOut</a>
                     </li>
                 </ul>
             </div>
@@ -32,11 +35,11 @@
     <!-- Welcome Section -->
     <div class="container mt-5">
         <h2>Welcome to Ghar ka Bawarchi</h2>
-        <h3>Hello, <span th:text="${user.fullName}"></span></h3>
-        <h4>My city is <span th:text="${user.city.cityName}"></span></h4><br><br>
+        <h3>Hello, <span th:text="${cook.cookName}"></span></h3>
+        <!-- <h4>My city is <span th:text="${user.city.cityName}"></span></h4><br><br> -->
         
         <!-- Change City Form -->
-        <form th:action="@{/home/change-city}" th:object="${cityDto}" method="post" class="mb-4">
+        <!-- <form th:action="@{/home/change-city}" th:object="${cityDto}" method="post" class="mb-4">
             <div class="row">
                 <div class="col-md-4">
                     <label for="cityId" class="form-label">Change City</label>
@@ -49,33 +52,45 @@
                     <button type="submit" class="btn btn-primary">Change City</button>
                 </div>
             </div>
-        </form>
+        </form> -->
     </div>
 
-    <!-- Cooks List Display as Cards -->
+    <!-- Cooks Order List Display as Cards -->
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-4" th:each="cook : ${cooks}">
+            <div class="col-md-8" th:each="booking : ${orders}">
                 <div class="card mb-4">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Cook Image">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${cook.cookName}"></h5>
-                        <p class="card-text"><strong>Specialization:</strong> <span th:text="${cook.specialization}"></span></p>
-                        <p class="card-text"><strong>Contact Info:</strong> <span th:text="${cook.contactInfo}"></span></p>
-                        <p class="card-text"><strong>City:</strong> <span th:text="${cook.city.cityName}"></span></p>
+                        <h5 class="card-title" th:text="'Order ID: ' + ${booking.id}"></h5>
+                        <p class="card-text" th:text="'Customer Name: ' + ${booking.customerName}"></p>
+                        <!-- <p class="card-text" th:text="'Food Item: ' + ${order.foodItem.menuName}"></p> -->
+                        <p class="card-text" th:text="'No of people: ' + ${booking.numberOfPeople}"></p>
+                        <p class="card-text" th:text="'Total Price: $' + ${booking.totalAmount}"></p>
+                        <p class="card-text" th:text="'Order Status: ' + ${booking.status}"></p>
+                        <h5 class="mt-3">Menu Items:</h5>
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Menu ID</th>
+                                    <th>Menu Name</th>
+                                    <th>Price (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="menu : ${booking.menuItems}">
+                                    <td th:text="${menu.menuId}"></td>
+                                    <td th:text="${menu.menuName}"></td>
+                                    <td th:text="${menu.price}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div class="d-flex justify-content-between">
-                            <a th:href="@{/home/details}" class="btn btn-info btn-sm">View</a>
-                            <a th:href="@{/home/book/{id}(id=${cook.cookId})}" class="btn btn-success btn-sm">Book</a>
+                            <a th:href="@{/cook/home/update-status/{id}(id=${booking.id})}" class="btn btn-success btn-sm">Update Status</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Log Out Button -->
-    <div class="container text-center mt-4">
-        <a th:href="@{/login}" class="btn btn-danger">Log Out</a>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
