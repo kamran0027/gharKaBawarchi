@@ -127,4 +127,16 @@ public class UserController {
     //     }
     // }
 
+    @PostMapping("/home/change-city")
+    public String changeCityProcess(CityDto cityDto, RedirectAttributes redirectAttributes){
+        boolean isUpdate=cityService.updateCity(cityDto.getCityId());
+        if (isUpdate) {
+            redirectAttributes.addFlashAttribute("message", "City updated successfully.");
+            return "redirect:/home";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Failed to update city. Please try again.");
+            return "redirect:/home";
+        }
+    }
+
 }
