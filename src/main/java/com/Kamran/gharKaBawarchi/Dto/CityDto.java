@@ -11,5 +11,4 @@ import lombok.Setter;
 @Getter
 public class CityDto {
     private Long cityId;
-    private String cityName;
 }
