@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <script>
+        // Toggle edit mode for profile
+        function enableProfileEdit() {
+            document.querySelectorAll('.profile-field').forEach(f => f.style.display = 'none');
+            document.querySelectorAll('.profile-input').forEach(i => i.style.display = 'block');
+            document.getElementById('updateProfileBtn').style.display = 'inline-block';
+            document.getElementById('cancelProfileBtn').style.display = 'inline-block';
+            document.getElementById('editProfileBtn').style.display = 'none';
+        }
+
+        function cancelProfileEdit() {
+            document.querySelectorAll('.profile-field').forEach(f => f.style.display = 'inline');
+            document.querySelectorAll('.profile-input').forEach(i => i.style.display = 'none');
+            document.getElementById('updateProfileBtn').style.display = 'none';
+            document.getElementById('cancelProfileBtn').style.display = 'none';
+            document.getElementById('editProfileBtn').style.display = 'inline-block';
+        }
+
+        // Toggle edit mode for address
+        function enableAddressEdit() {
+            document.querySelectorAll('.address-field').forEach(f => f.style.display = 'none');
+            document.querySelectorAll('.address-input').forEach(i => i.style.display = 'block');
+            document.getElementById('updateAddressBtn').style.display = 'inline-block';
+            document.getElementById('cancelAddressBtn').style.display = 'inline-block';
+            document.getElementById('editAddressBtn').style.display = 'none';
+        }
+
+        function cancelAddressEdit() {
+            document.querySelectorAll('.address-field').forEach(f => f.style.display = 'inline');
+            document.querySelectorAll('.address-input').forEach(i => i.style.display = 'none');
+            document.getElementById('updateAddressBtn').style.display = 'none';
+            document.getElementById('cancelAddressBtn').style.display = 'none';
+            document.getElementById('editAddressBtn').style.display = 'inline-block';
+        }
+    </script>
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Ghar ka Bawarchi</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/home}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/home/order}">My Order</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/home/favourate}">My Favourite</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/home/profile}">Profile</a></li>
+                    <li class="nav-item">
+                        <div class="container text-center">
+                            <a th:href="@{/login}" class="btn btn-danger">Log Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <div class="container mt-5">
+        <div>
+            <div class="container mt-3">
+                <div th:if="${message}" class="alert alert-success" role="alert" th:text="${message}"></div>
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+            </div>
+        </div>
+        <h2>User Profile</h2>
+        <form th:action="@{/home/profile/update}" th:object="${user}" method="post">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Full Name -->
+                    <p class="card-text">
+                        <strong>Full Name:</strong>
+                        <span class="profile-field" th:text="${user.fullName}"></span>
+                        <input class="form-control profile-input" type="text" th:field="*{fullName}" style="display:none;">
+                    </p>
+
+                    <!-- Email -->
+                    <p class="card-text">
+                        <strong>Email:</strong>
+                        <span class="profile-field" th:text="${user.email}"></span>
+                        <input class="form-control profile-input" type="email" th:field="*{email}" style="display:none;">
+                    </p>
+
+                    <!-- Password -->
+                    <p class="card-text">
+                        <strong>Password:</strong>
+                        <span class="profile-field" th:text="${user.password}"></span>
+                        <input class="form-control profile-input" type="password" th:field="*{password}" style="display:none;">
+                    </p>
+
+                    <!-- Phone -->
+                    <p class="card-text">
+                        <strong>Phone:</strong>
+                        <span class="profile-field" th:text="${user.phoneNumber}"></span>
+                        <input class="form-control profile-input" type="text" th:field="*{phoneNumber}" style="display:none;">
+                    </p>
+
+                    <!-- Buttons -->
+                    <a id="editProfileBtn" class="btn btn-primary" href="javascript:void(0);" onclick="enableProfileEdit()">Edit Details</a>
+                    <button id="updateProfileBtn" type="submit" class="btn btn-success" style="display:none;">Update</button>
+                    <button id="cancelProfileBtn" type="button" class="btn btn-secondary" style="display:none;" onclick="cancelProfileEdit()">Cancel</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Address Section -->
+        <div class="mt-4">
+            <h4>Address Details</h4>
+
+            <div th:if="${address == null}" class="alert alert-info">
+                No address found for this user.
+            </div>
+
+            <form th:if="${address != null}" th:action="@{/home/profile/update-address}" th:object="${address}" method="post">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <strong>Street:</strong>
+                            <span class="address-field" th:text="${address.street}"></span>
+                            <input class="form-control address-input" type="text" th:field="*{street}" style="display:none;">
+                        </p>
+
+                        <p class="card-text">
+                            <strong>City:</strong>
+                            <span class="address-field" th:text="${address.city}"></span>
+                            <input class="form-control address-input" type="text" th:field="*{city}" style="display:none;">
+                        </p>
+
+                        <p class="card-text">
+                            <strong>State:</strong>
+                            <span class="address-field" th:text="${address.state}"></span>
+                            <input class="form-control address-input" type="text" th:field="*{state}" style="display:none;">
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Zip Code:</strong>
+                            <span class="address-field" th:text="${address.zipCode}"></span>
+                            <input class="form-control address-input" type="text" th:field="*{zipCode}" style="display:none;">
+                        </p>
+
+                        <!-- Buttons -->
+                        <a id="editAddressBtn" class="btn btn-primary" href="javascript:void(0);" onclick="enableAddressEdit()">Edit Address</a>
+                        <button id="updateAddressBtn" type="submit" class="btn btn-success" style="display:none;">Update</button>
+                        <button id="cancelAddressBtn" type="button" class="btn btn-secondary" style="display:none;" onclick="cancelAddressEdit()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
