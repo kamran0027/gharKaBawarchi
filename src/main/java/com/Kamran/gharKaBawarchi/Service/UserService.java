@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.Kamran.gharKaBawarchi.Dto.LogInDto;
 import com.Kamran.gharKaBawarchi.Dto.RegistrationDto;
+import com.Kamran.gharKaBawarchi.Dto.UserProfileDto;
 import com.Kamran.gharKaBawarchi.Entity.Address;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.City;
@@ -15,6 +16,8 @@ import com.Kamran.gharKaBawarchi.Entity.Users;
 import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CityRepository;
 import com.Kamran.gharKaBawarchi.Respository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -71,6 +74,24 @@ public class UserService {
         // set the addres when we save the user beacuse the cascade type is all
 
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public boolean updateProfile(UserProfileDto userProfileDto){
+        Users user=userRepository.findByUserEmailIgnoreCase(userProfileDto.getEmail());
+        if (user!=null) {
+            user.setFullName(userProfileDto.getFullName());
+            user.setPhoneNumber(userProfileDto.getPhoneNumber());
+            if (userProfileDto.getPassword().length()!=0 && userProfileDto.getPassword().charAt(0)!=' ') {
+                user.setPassword(userProfileDto.getPassword());
+            }
+            
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+        
+
     }
 
 }

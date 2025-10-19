@@ -5,7 +5,7 @@
     <!-- Add Bootstrap CDN for styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
     <!-- Navigation Bar with Bootstrap classes -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
@@ -22,8 +22,17 @@
                         <a class="nav-link" th:href="@{/home/order}">My Order</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" th:href="@{/home/favourate}">My favourate</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" th:href="@{/home/profile}">Profile</a>
                     </li>
+                    <li class="nav-item">
+                        <div class="container text-center">
+                            <a th:href="@{/login}" class="btn btn-danger">Log Out</a>
+                        </div>
+                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -62,7 +71,9 @@
         <div class="row">
             <div class="col-md-4" th:each="cook : ${cooks}">
                 <div class="card mb-4">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Cook Image">
+                    <div style="height:200px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#f8f9fa;">
+                        <img src="/images/ana.jpg" class="img-fluid" alt="ana de Armas" style="max-height:100%; width:auto; object-fit:contain;">
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title" th:text="${cook.cookName}"></h5>
                         <p class="card-text"><strong>Specialization:</strong> <span th:text="${cook.specialization}"></span></p>
@@ -78,10 +89,12 @@
         </div>
     </div>
 
-    <!-- Log Out Button -->
-    <div class="container text-center mt-4">
-        <a th:href="@{/login}" class="btn btn-danger">Log Out</a>
-    </div>
+    
+    <footer>
+        <div class="container text-center mt-4 mb-4">
+            <p>&copy; 2024 Ghar ka Bawarchi. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
