@@ -126,6 +126,13 @@
             </div>
 
             <form th:if="${address != null}" th:action="@{/home/profile/update-address}" th:object="${address}" method="post">
+                <!-- Email -->
+                    <!-- <p class="card-text" style="display: none;">
+                        <strong>Email:</strong>
+                        <span th:text="${user.email}"></span>
+                    </p>
+                    <input  type="hidden" th:field="*{email}"> -->
+
                 <div class="card">
                     <div class="card-body">
                         <p class="card-text">
