@@ -25,7 +25,7 @@ public class UserProfileController {
     private  UserService userService;
 
     @Autowired
-     private AddresService addresService;
+    private AddresService addresService;
 
     @GetMapping("/profile")
     public String userProfile(Model model){
@@ -53,6 +53,20 @@ public class UserProfileController {
             return "redirect:/home/profile";
         }
         redirectAttributes.addFlashAttribute("error","profile-updation fail");
+        return "redirect:/home/profile";
+    }
+
+    @PostMapping("/profile/update-address")
+    public String userAddressUpdate(@ModelAttribute("address") AddressDto addressDto,RedirectAttributes redirectAttributes){
+        //Later i fetch the user name using the JWT authentication token
+        // and i can also use the security context holder to fetch the curent login  user details
+        String userEmail="kamranahmadmd463@gmail.com";
+
+        if(addresService.updateAddress(addressDto,userEmail)){
+            redirectAttributes.addFlashAttribute("message","Address update succedfully");
+            return "redirect:/home/profile";
+        }
+        redirectAttributes.addFlashAttribute("error","Address update fail");
         return "redirect:/home/profile";
     }
 }
