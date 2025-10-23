@@ -2,7 +2,11 @@ package com.Kamran.gharKaBawarchi.Entity;
 
 import java.util.List;
 
+import com.Kamran.gharKaBawarchi.Entity.Enum.Roles;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,6 +38,9 @@ public class Cook {
     private String cookEmail;
     private String cookPassword;
     private String contactInfo;
+
+    @Enumerated(EnumType.STRING)
+    private Roles role;
 
     @ManyToOne
     @JoinColumn(name = "city_id")

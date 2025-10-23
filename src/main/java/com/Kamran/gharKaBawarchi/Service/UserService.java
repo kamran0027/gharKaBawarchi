@@ -13,6 +13,7 @@ import com.Kamran.gharKaBawarchi.Entity.Address;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.City;
 import com.Kamran.gharKaBawarchi.Entity.Users;
+import com.Kamran.gharKaBawarchi.Entity.Enum.Roles;
 import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CityRepository;
 import com.Kamran.gharKaBawarchi.Respository.UserRepository;
@@ -55,6 +56,7 @@ public class UserService {
 
     public Users saveRegistration(RegistrationDto registrationDto){
         Users user=new Users();
+        user.setRole(Roles.USER);
         Address address=new Address();
 
         address.setStreet(registrationDto.getAddressDto().getStreet());

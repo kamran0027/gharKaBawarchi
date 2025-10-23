@@ -2,6 +2,8 @@ package com.Kamran.gharKaBawarchi.Entity;
 
 import java.util.List;
 
+import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

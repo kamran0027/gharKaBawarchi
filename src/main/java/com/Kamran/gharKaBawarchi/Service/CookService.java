@@ -13,6 +13,7 @@ import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.City;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Menu;
+import com.Kamran.gharKaBawarchi.Entity.Enum.Roles;
 import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CityRepository;
 import com.Kamran.gharKaBawarchi.Respository.CookRepository;
@@ -61,6 +62,7 @@ public class CookService {
 
     public Cook saveCook(CookRegisstrationDto cookRegisstrationDto){
         Cook cook=new Cook();
+        cook.setRole(Roles.COOK);
         cook.setCookName(cookRegisstrationDto.getCookName());
         cook.setCookEmail(cookRegisstrationDto.getCookEmail());
         cook.setCookPassword(cookRegisstrationDto.getCookPassword());

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.Kamran.gharKaBawarchi.Dto.BookingDto;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
-import com.Kamran.gharKaBawarchi.Entity.BookingStatus;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Menu;
 import com.Kamran.gharKaBawarchi.Entity.Users;
+import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
 import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CookRepository;
 import com.Kamran.gharKaBawarchi.Respository.MenuRepository;

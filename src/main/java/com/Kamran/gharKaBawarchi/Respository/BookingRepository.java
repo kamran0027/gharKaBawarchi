@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.Kamran.gharKaBawarchi.Entity.Booking;
-import com.Kamran.gharKaBawarchi.Entity.BookingStatus;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Users;
+import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Long> {

@@ -1,4 +1,4 @@
-package com.Kamran.gharKaBawarchi.Entity;
+package com.Kamran.gharKaBawarchi.Entity.Enum;
 
 public enum BookingStatus {
     PENDING,

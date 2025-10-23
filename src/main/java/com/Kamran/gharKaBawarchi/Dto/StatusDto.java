@@ -1,6 +1,6 @@
 package com.Kamran.gharKaBawarchi.Dto;
 
-import com.Kamran.gharKaBawarchi.Entity.BookingStatus;
+import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
