@@ -57,6 +57,9 @@
     <div th:if="${#lists.isEmpty(bookings)}" class="alert alert-info">
         No bookings found for this user.
     </div>
+    <div th:if="${message}" class="alert alert-info">
+        <p th:text="${message}"></p>
+    </div>
 
     <div th:each="booking : ${bookings}" class="booking-card card">
         <div class="card-header">
@@ -68,6 +71,11 @@
             <p><strong>Customer Name:</strong> <span th:text="${booking.customerName}"></span></p>
             <p><strong>Number of People:</strong> <span th:text="${booking.numberOfPeople}"></span></p>
             <p><strong>Cook:</strong> <span th:text="${booking.cook.cookName}"></span></p>
+            <p><strong>Booking date</strong> <span th:text="${booking.timeSlot.date}"></span></p>
+            <p><strong>Start time</strong> <span th:text="${booking.timeSlot.startTime}"></span></p>
+            <p><strong>End time</strong> <span th:text="${booking.timeSlot.endTime}"></span></p>
+            <a th:href="@{'/home/book/cancle'(bookingId=${booking.id})}" class="btn btn-success btn-sm">Cancle Booking</a>
+
 
             <button type="button" class="btn btn-primary btn-view-menu"
                 th:attr="onclick='toggleMenuItems(' + ${booking.Id} + ')'">
