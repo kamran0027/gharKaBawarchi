@@ -29,9 +29,12 @@
                     </li>
                     <li class="nav-item">
                         <div class="container text-center">
-                            <a th:href="@{/login}" class="btn btn-danger">Log Out</a>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="btn btn-danger">Log Out</button>
+                            </form>
                         </div>
                     </li>
+
                     
                 </ul>
             </div>
@@ -81,7 +84,7 @@
                         <p class="card-text"><strong>City:</strong> <span th:text="${cook.city.cityName}"></span></p>
                         <div class="d-flex justify-content-between">
                             <a th:href="@{/home/details/{id}(id=${cook.cookId})}" class="btn btn-info btn-sm">View</a>
-                            <a th:href="@{/home/book/{id}(id=${cook.cookId})}" class="btn btn-success btn-sm">Book</a>
+                            <a th:href="@{'/home/book/calendar'(cookId=${cook.cookId})}" class="btn btn-success btn-sm">Book</a>
                         </div>
                     </div>
                 </div>
