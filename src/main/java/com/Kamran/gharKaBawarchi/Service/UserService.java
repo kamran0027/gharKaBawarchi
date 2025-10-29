@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.Kamran.gharKaBawarchi.Dto.LogInDto;
 import com.Kamran.gharKaBawarchi.Dto.RegistrationDto;
 import com.Kamran.gharKaBawarchi.Dto.UserProfileDto;
 import com.Kamran.gharKaBawarchi.Entity.Address;
@@ -31,25 +31,17 @@ public class UserService {
 
     @Autowired
     private CityRepository cityRepository;
-    
-    public Boolean processLogin(LogInDto logInDto){
-        Users users=userRepository.findByUserEmailIgnoreCase(logInDto.getUserName());
-        if(users!=null){
-            if(users.getPassword().equals(logInDto.getPassword())){
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     public Users getUser(String email){
         Users users=userRepository.findByUserEmailIgnoreCase(email);
         return users;
     }
 
-    public List<Booking> getAllOrderByUserId(Long userId){
-        return bookingRepository.findByUsers(userRepository.findById(userId).get());
+    public List<Booking> getAllOrderByUserName(String userName){
+        return bookingRepository.findByUsers(userRepository.findByUserEmailIgnoreCase(userName));
         //return bookingRepository.findBookingsByUserId(userId);
 
     }
@@ -58,16 +50,14 @@ public class UserService {
         Users user=new Users();
         user.setRole(Roles.USER);
         Address address=new Address();
-
         address.setStreet(registrationDto.getAddressDto().getStreet());
         address.setCity(registrationDto.getAddressDto().getCity());
         address.setState(registrationDto.getAddressDto().getState());
         address.setZipCode(registrationDto.getAddressDto().getZipCode());
         address.setCountry(registrationDto.getAddressDto().getCountry());
-
         user.setUserEmail(registrationDto.getEmail());
         user.setPhoneNumber(registrationDto.getPhoneNumber());
-        user.setPassword(registrationDto.getPassword());
+        user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setAddress(address);
         user.setFullName(registrationDto.getFullName());
         // setting the city for service
@@ -84,9 +74,9 @@ public class UserService {
         if (user!=null) {
             user.setFullName(userProfileDto.getFullName());
             user.setPhoneNumber(userProfileDto.getPhoneNumber());
-            if (userProfileDto.getPassword().length()!=0 && userProfileDto.getPassword().charAt(0)!=' ') {
-                user.setPassword(userProfileDto.getPassword());
-            }
+            // if (userProfileDto.getPassword().length()!=0 && userProfileDto.getPassword().charAt(0)!=' ') {
+            //     user.setPassword(userProfileDto.getPassword());
+            // }
             
             userRepository.save(user);
             return true;

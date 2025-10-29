@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookingDto {
     private Long cookId;
+    private Long slotId;
     private Double totalAmount;
     private String customerName;
     private int numberOfPeople;

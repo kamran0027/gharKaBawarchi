@@ -1,5 +1,6 @@
 package com.Kamran.gharKaBawarchi.Entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
@@ -14,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +39,9 @@ public class Booking {
     private String customerName;
     private int numberOfPeople;
 
-    @ManyToMany
+    private LocalDateTime bookingTIme;
+
+    @ManyToMany()
     @JoinTable(
         name = "booking_food_item",
         joinColumns = @JoinColumn(name="booking_id"),
@@ -45,11 +49,15 @@ public class Booking {
     )
     private List<Menu> menuItems;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "cook_id")
     private Cook cook;
 
-    @ManyToOne
+    @OneToOne()
+    @JoinColumn(name = "slot_id")
+    private TimeSlot timeSlot;
+
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private Users users;
 

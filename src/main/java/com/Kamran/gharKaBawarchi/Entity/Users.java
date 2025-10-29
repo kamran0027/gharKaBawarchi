@@ -53,4 +53,8 @@ public class Users {
     @OneToMany(mappedBy = "users", cascade=CascadeType.ALL)
     private List<Booking> bookings;
 
+    public String getRoleString(){
+        return role!=null ?role.name(): null;
+    }
+
 }

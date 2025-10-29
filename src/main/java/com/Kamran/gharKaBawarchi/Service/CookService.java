@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.Kamran.gharKaBawarchi.Dto.CookRegisstrationDto;
-import com.Kamran.gharKaBawarchi.Dto.LogInDto;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.City;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
@@ -32,6 +32,9 @@ public class CookService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired 
+    private PasswordEncoder passwordEncoder;
+
     public  CookService(CookRepository cookRepository,MenuRepository menuRepository){
         this.cookRepository=cookRepository;
         this.menuRepository = menuRepository;
@@ -45,17 +48,7 @@ public class CookService {
     public Optional<Cook> getCookById(Long id){
         return cookRepository.findById(id);
     } 
-
-    public Optional<Cook> cookLoginProcess(LogInDto logInDto){
-        Optional<Cook> cook=cookRepository.findByCookEmail(logInDto.getUserName());
-        if(cook.isPresent()){
-            if (cook.get().getCookPassword().equals(logInDto.getPassword())) {
-                return cook;
-            }
-        }
-        return null;
-    }
-
+    
     public List<Booking> getAllBookingByCook(Cook cook){
         return bookingRepository.findByCook(cook);
     }
@@ -65,7 +58,7 @@ public class CookService {
         cook.setRole(Roles.COOK);
         cook.setCookName(cookRegisstrationDto.getCookName());
         cook.setCookEmail(cookRegisstrationDto.getCookEmail());
-        cook.setCookPassword(cookRegisstrationDto.getCookPassword());
+        cook.setCookPassword(passwordEncoder.encode(cookRegisstrationDto.getCookPassword()));
         cook.setContactInfo(cookRegisstrationDto.getCookPhone());
         cook.setExperienceYears(cookRegisstrationDto.getExperienceYears());
         cook.setSpecialization(cookRegisstrationDto.getSpecialization());

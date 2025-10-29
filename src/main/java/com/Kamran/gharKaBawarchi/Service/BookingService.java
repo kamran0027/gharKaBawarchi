@@ -5,19 +5,21 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.Kamran.gharKaBawarchi.Dto.BookingDto;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Menu;
+import com.Kamran.gharKaBawarchi.Entity.TimeSlot;
 import com.Kamran.gharKaBawarchi.Entity.Users;
 import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
 import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CookRepository;
 import com.Kamran.gharKaBawarchi.Respository.MenuRepository;
-
-import jakarta.transaction.Transactional;
+import com.Kamran.gharKaBawarchi.Respository.TimeSlotRepository;
 
 @Service
 public class BookingService {
@@ -27,31 +29,35 @@ public class BookingService {
     @Autowired
     private MenuRepository menuRepository;
     @Autowired
-    private final CookService cookService;
+    private  CookService cookService;
     @Autowired
-    private final UserService userService;
+    private  UserService userService;
     @Autowired
-    private final BookingRepository bookingRepository;
+    private  BookingRepository bookingRepository;
 
-    BookingService(CookService cookService, UserService userService, BookingRepository bookingRepository) {
-        this.cookService = cookService;
-        this.userService = userService;
-        this.bookingRepository = bookingRepository;
-    }
+    @Autowired
+    private  TimeSlotRepository timeSlotRepository;
 
-    @Transactional
+    
     public Boolean creatBooking(BookingDto bookingDto){
         Booking booking=new Booking();
-        //mapping user to booking
-        // Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-        // String userEmail=auth.getName();
-        // Users users=userRepository.findByUserEmailIgnoreCase(userEmail);
-        // booking.setUsers(users);
-        Users user=userService.getUser("kamranahmadmd463@gmail.com");
+        Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+        String userEmail=auth.getName();
+        Users user=userService.getUser(userEmail);
         booking.setUsers(user);
         // setting the cook to booking kk
         Optional<Cook> cook=cookRepository.findById(bookingDto.getCookId());
         booking.setCook(cook.get());
+
+        // LocalDateTime time=new LocalDateTime();
+        // booking.setBookingTIme(ti);
+
+        TimeSlot timeSlot=timeSlotRepository.findById(bookingDto.getSlotId()).orElse(null);
+        if(timeSlot.isBooked()){
+            return false;
+        }
+        timeSlot.setBooked(true);
+        booking.setTimeSlot(timeSlot);
 
         // mapping food item to booking 
         List<Menu> menuItems=new ArrayList<>();
@@ -70,5 +76,24 @@ public class BookingService {
 
         bookingRepository.save(booking);
         return true;
+    }
+
+    public boolean cancleBooking(Long bookingId){
+        Booking booking=bookingRepository.findById(bookingId).orElse(null);
+        if(booking==null){
+            return false;
+        }
+        //available that slot
+        TimeSlot timeSlot=booking.getTimeSlot();
+        timeSlot.setBooked(false);
+        timeSlotRepository.save(timeSlot);
+        //deleting booking from only user
+        booking.setUsers(null);
+        booking.setStatus(BookingStatus.CANCELLED);
+        bookingRepository.save(booking);
+
+        return true;
+        
+        
     }
 }

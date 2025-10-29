@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.Kamran.gharKaBawarchi.Entity.City;
@@ -25,7 +27,9 @@ public class CityService {
     public boolean updateCity(Long cityId){
         Optional<City> city= cityRepository.findById(cityId);
         if (city.isPresent()) {
-            Users user=userService.getUser("kamranahmadmd463@gmail.com");
+            Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+            String userEmail=auth.getName();
+            Users user=userService.getUser(userEmail);
             if(user!=null){
                 user.setCity(city.get());
                 userRepository.save(user);

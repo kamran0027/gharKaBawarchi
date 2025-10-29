@@ -1,6 +1,8 @@
 package com.Kamran.gharKaBawarchi.Controller.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +31,9 @@ public class UserProfileController {
 
     @GetMapping("/profile")
     public String userProfile(Model model){
-
-        String userName="kamranahmadmd463@gmail.com";
-        Users user= userService.getUser(userName);
+        Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+        String userEmail=auth.getName();
+        Users user= userService.getUser(userEmail);
         UserProfileDto userProfileDto=new UserProfileDto();
         userProfileDto.setFullName(user.getFullName());
         userProfileDto.setEmail(user.getUserEmail());
@@ -40,7 +42,7 @@ public class UserProfileController {
         userProfileDto.setPhoneNumber(user.getPhoneNumber());
         model.addAttribute("user", userProfileDto);
 
-        AddressDto addressDto=addresService.getAddressByUserId(userName);
+        AddressDto addressDto=addresService.getAddressByUserId(userEmail);
         model.addAttribute("address", addressDto);
 
         return "user_profile1";
@@ -60,7 +62,8 @@ public class UserProfileController {
     public String userAddressUpdate(@ModelAttribute("address") AddressDto addressDto,RedirectAttributes redirectAttributes){
         //Later i fetch the user name using the JWT authentication token
         // and i can also use the security context holder to fetch the curent login  user details
-        String userEmail="kamranahmadmd463@gmail.com";
+        Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+        String userEmail=auth.getName();
 
         if(addresService.updateAddress(addressDto,userEmail)){
             redirectAttributes.addFlashAttribute("message","Address update succedfully");

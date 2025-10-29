@@ -1,9 +1,11 @@
 package com.Kamran.gharKaBawarchi.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.Kamran.gharKaBawarchi.Entity.Enum.Roles;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -49,6 +51,10 @@ public class Cook {
     @OneToMany(mappedBy = "cook")
     private List<Booking> bookings;
 
+    @OneToMany(mappedBy ="cook", cascade = CascadeType.ALL, orphanRemoval =true)
+    private List<TimeSlot> timeSlots=new ArrayList<>();
+    
+
 
     @ManyToMany
     @JoinTable(
@@ -57,6 +63,11 @@ public class Cook {
         inverseJoinColumns = @JoinColumn(name = "menu_id")
     )
     private List<Menu> menuItems;
+
+
+    public String getRoleString(){
+        return role!=null?role.name():null;
+    }
 
 
 }
