@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.Kamran.gharKaBawarchi.Dto.CookRegisstrationDto;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
@@ -53,6 +54,7 @@ public class CookService {
         return bookingRepository.findByCook(cook);
     }
 
+    @Transactional
     public Cook saveCook(CookRegisstrationDto cookRegisstrationDto){
         Cook cook=new Cook();
         cook.setRole(Roles.COOK);
@@ -67,7 +69,16 @@ public class CookService {
 
         //filling menu item to cook
         List<Menu> menuItem=menuRepository.findAllById(cookRegisstrationDto.getMenuId());
-        cook.setMenuItems(menuItem);
+        List<Menu> cookMenu=new ArrayList<>();
+        for(int i=0;i<menuItem.size();i++){
+            cookMenu.add(new Menu());
+        }
+        for(int i=0;i<menuItem.size();i++){
+            cookMenu.get(i).setCook(cook);
+            cookMenu.get(i).setMenuName(menuItem.get(i).getMenuName());
+            cookMenu.get(i).setPrice(menuItem.get(i).getPrice());
+        }
+        menuRepository.saveAll(cookMenu);
 
         return cookRepository.save(cook);
     }
