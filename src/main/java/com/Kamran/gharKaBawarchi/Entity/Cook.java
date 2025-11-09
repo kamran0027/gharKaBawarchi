@@ -13,8 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -56,13 +54,15 @@ public class Cook {
     
 
 
-    @ManyToMany
-    @JoinTable(
-        name = "cook_menu",
-        joinColumns = @JoinColumn(name = "cook_id"),
-        inverseJoinColumns = @JoinColumn(name = "menu_id")
-    )
-    private List<Menu> menuItems;
+    // @ManyToMany
+    // @JoinTable(
+    //     name = "cook_menu",
+    //     joinColumns = @JoinColumn(name = "cook_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "menu_id")
+    // )
+    @OneToMany(mappedBy = "cook",cascade = CascadeType.ALL, orphanRemoval = true)
+    
+    private List<Menu> menuItems=new ArrayList<>();
 
 
     public String getRoleString(){
