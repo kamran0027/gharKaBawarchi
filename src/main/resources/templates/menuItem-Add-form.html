@@ -8,6 +8,7 @@
 <h2>Add a New Menu Item</h2>
 
 <form th:action="@{/cook/home/menuItem/save}" th:object="${menuDto}" method="post">
+    <input type="hidden" th:field="*{menuId}">
     <label>Menu Name:</label>
     <input type="text" th:field="*{menuItemName}" placeholder="e.g. Paneer Butter Masala" required /><br><br>
 

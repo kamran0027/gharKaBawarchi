@@ -12,9 +12,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,10 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@Table(indexes ={
+    @Index(name = "idx_C_name", columnList = "cookName"),
+    @Index(name= "idx_C_Email", columnList="cookEmail")
+    })
 public class Cook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

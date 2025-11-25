@@ -37,9 +37,15 @@ public class SlotGeneratorService {
         System.out.println("intializing slot geneartion on stsart up");
 
         List<Cook> cooks=cookRepo.findAll();
-        for(Cook cook: cooks){
-            generateSlotsForCook(cook);
+        if(cooks.size()>0){
+            for(Cook cook: cooks){
+                generateSlotsForCook(cook);
+            }
         }
+        else{
+            System.out.println("no cook is present");
+        }
+        
     }
 
     /**

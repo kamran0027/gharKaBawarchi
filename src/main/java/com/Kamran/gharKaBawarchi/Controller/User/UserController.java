@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,8 +17,11 @@ import com.Kamran.gharKaBawarchi.Dto.CityDto;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Users;
+import com.Kamran.gharKaBawarchi.Respository.CookRepository;
+import com.Kamran.gharKaBawarchi.Respository.FavouriteCookRepository;
 import com.Kamran.gharKaBawarchi.Service.CityService;
 import com.Kamran.gharKaBawarchi.Service.CookService;
+import com.Kamran.gharKaBawarchi.Service.FavourateCookService;
 import com.Kamran.gharKaBawarchi.Service.UserService;
 
 
@@ -30,6 +34,15 @@ public class UserController {
 
     @Autowired
     private final CookService cookService;
+
+    @Autowired
+    private FavourateCookService favourateCookService;
+
+    @Autowired
+    private FavouriteCookRepository favouriteCookRepository;
+
+    @Autowired
+    private CookRepository cookRepository;
 
     @Autowired
     private CityService cityService;
@@ -74,6 +87,30 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error", "Failed to update city. Please try again.");
             return "redirect:/home";
         }
+    }
+
+
+    @GetMapping("/home/favourate")
+
+    public String showFavourate(Model model){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+        Users user=userService.getUser(userName);
+        List<Long> cookId=favouriteCookRepository.findCookIdsByUser(user);
+        List<Cook> cooks=cookRepository.findAllById(cookId);
+        model.addAttribute("cooks", cooks);
+
+        return "favourate-cook";
+    }
+
+    @GetMapping("/home/favourate/{id}")
+    public String addToFavourate(@PathVariable("id") Long cookId,RedirectAttributes redirectAttributes){
+        if(favourateCookService.saveFavourate(cookId)){
+
+            return "redirect:/home/favourate";
+        }
+        redirectAttributes.addFlashAttribute("message","faled to Add cook to favourate list Or it is Alredy in Favourate List");
+        return "redirect:/home/favourate";
     }
 
 }

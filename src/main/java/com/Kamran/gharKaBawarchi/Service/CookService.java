@@ -32,6 +32,8 @@ public class CookService {
     private CityRepository cityRepository;
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private SlotGeneratorService slotGeneratorService;
 
     @Autowired 
     private PasswordEncoder passwordEncoder;
@@ -48,7 +50,11 @@ public class CookService {
     }
     public Optional<Cook> getCookById(Long id){
         return cookRepository.findById(id);
-    } 
+    }
+
+    public Cook getCookByUSerEmail(String userEmail){
+        return cookRepository.findByCookEmail(userEmail).orElse(null);
+    }
     
     public List<Booking> getAllBookingByCook(Cook cook){
         return bookingRepository.findByCook(cook);
@@ -80,7 +86,12 @@ public class CookService {
         }
         menuRepository.saveAll(cookMenu);
 
-        return cookRepository.save(cook);
+        Cook saveCook=cookRepository.save(cook);
+        slotGeneratorService.generateSlotsForCook(saveCook);
+
+        return saveCook;
+
+        
     }
 
 }

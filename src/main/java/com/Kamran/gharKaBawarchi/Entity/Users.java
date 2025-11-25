@@ -53,6 +53,9 @@ public class Users {
     @OneToMany(mappedBy = "users", cascade=CascadeType.ALL)
     private List<Booking> bookings;
 
+    @OneToMany(mappedBy = "user")
+    private List<FavouriteCook> favouriteCooks;
+
     public String getRoleString(){
         return role!=null ?role.name(): null;
     }

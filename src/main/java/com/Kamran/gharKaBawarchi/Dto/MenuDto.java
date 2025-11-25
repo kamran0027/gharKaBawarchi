@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MenuDto {
+    private Long menuId;
     private String menuItemName;
     private double price;
 

@@ -1,5 +1,6 @@
 package com.Kamran.gharKaBawarchi.Controller.Cook;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.Kamran.gharKaBawarchi.Dto.MenuDto;
 import com.Kamran.gharKaBawarchi.Dto.StatusDto;
 import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
+import com.Kamran.gharKaBawarchi.Entity.Menu;
 import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
 import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CookRepository;
+import com.Kamran.gharKaBawarchi.Respository.MenuRepository;
 import com.Kamran.gharKaBawarchi.Respository.TimeSlotRepository;
 import com.Kamran.gharKaBawarchi.Service.CityService;
 import com.Kamran.gharKaBawarchi.Service.CookService;
@@ -40,6 +44,9 @@ public class CookController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private MenuRepository menuRepository;
 
     @Autowired
     private TimeSlotRepository slotRepository;
@@ -95,5 +102,65 @@ public class CookController {
         return "redirect:/cook/home";
     }
 
+    @GetMapping("/menuItem")
+    public String ShowMenuItem(Model model){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+        Cook cook=cookRepository.findByCookEmail(userName).get();
+        model.addAttribute("cookName",cook.getCookName());
+        List<Menu> menus=menuService.getMenuByCook(cook.getCookId());
+        model.addAttribute("menus",menus);
+
+        return "cook_menuItem";
+    }
+    @GetMapping("/menuItem/add-menu")
+    public String addMenuItem(Model model){
+        MenuDto menuDto=new MenuDto();
+        menuDto.setMenuId(null);
+        model.addAttribute("menuDto",menuDto);
+
+        return "menuItem-Add-form";
+    }
+
+    @PostMapping("/menuItem/save")
+    public String saveMenuItem(MenuDto menuDto, RedirectAttributes redirectAttributes){
+            System.out.println("************************");
+            System.out.println(menuDto.getMenuItemName());
+            System.out.println(menuDto.getPrice());
+        if (menuService.saveMenu(menuDto)) {
+            redirectAttributes.addFlashAttribute("message","menu add succesfully");
+            return "redirect:/cook/menuItem";
+        }
+        redirectAttributes.addFlashAttribute("message","failed to add menu");
+        return "redirect:/cook/menuItem";
+    }
+
+    //update the Menu item from cook 
+    @GetMapping("/menuItem/edit/{id}")
+    public String editMenuItem(@PathVariable("id") Long menuId,Model model,RedirectAttributes redirectAttributes){
+        Menu menu=menuRepository.findById(menuId).orElse(null);
+        System.out.println("******************************");
+        System.out.println(menu.getMenuName());
+        MenuDto menuDto=new MenuDto(menu.getMenuId(),menu.getMenuName(),menu.getPrice());
     
+        if(menu!=null){
+            model.addAttribute("menuDto",menuDto);
+            return "menuItem-Add-form";
+        }
+        redirectAttributes.addFlashAttribute("message","failed to update");
+        return"redirect:/cook/menuItem";
+    }
+
+    // Delete Menu item 
+
+    @GetMapping("/menuItem/{id}")
+    public String deleteMenu(@PathVariable("id") Long menuId,RedirectAttributes redirectAttributes){
+        if (menuService.deleteMenu(menuId)) {
+            redirectAttributes.addFlashAttribute("message","menu Item delete Succfelly");
+            return "redirect:/cook/menuItem";
+        }
+        redirectAttributes.addFlashAttribute("message","failed to delete MenuItem");
+        return "redirect:/cook/menuItem";
+    }
+
 }

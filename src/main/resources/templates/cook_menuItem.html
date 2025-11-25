@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Menus for ' + ${cookName}">Cook Menus</title>
+</head>
+<body>
+<h2 th:text="'Menus for ' + ${cookName}"></h2>
+<h2 th:if="${message}" th:text="${message}"></h2>
+<!-- Show current menu items -->
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Menu Name</th>
+            <th>Price</th>
+            <th>action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="menu : ${menus}">
+            <td th:text="${menu.menuName}"></td>
+            <td th:text="${menu.price}"></td>
+            <td>
+                <!-- <a th:href="@{/cook/home/menuItem/edit/{id}(id=${menu.menuId})}">edit</a> 
+                <a th:href="@{/cook/home/menuItem/{id}(id=${menu.menuId})}">Delete</a> -->
+            </td>
+        </tr>
+        <tr th:if="${menus.isEmpty()}">
+            <td colspan="2">No menu items yet.</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<!-- Link to add a new menu item -->
+<a th:href="@{/cook/home/menuItem/add-menu}">
+    <button>Add New Menu Item</button>
+</a>
+
+</body>
+</html>
