@@ -38,6 +38,11 @@ public class CookService {
     @Autowired 
     private PasswordEncoder passwordEncoder;
 
+    private static final long MAX_BYTES=5*1024*1024; //5MB
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
     public  CookService(CookRepository cookRepository,MenuRepository menuRepository){
         this.cookRepository=cookRepository;
         this.menuRepository = menuRepository;
@@ -72,6 +77,18 @@ public class CookService {
         cook.setSpecialization(cookRegisstrationDto.getSpecialization());
         //filling city
         cook.setCity(cityRepository.findById(cookRegisstrationDto.getCityId()).get());
+
+        // uploading image 
+
+        try {
+            fileStorageService.validateImage(cookRegisstrationDto.getImage(), MAX_BYTES);
+            String path=fileStorageService.storeFile(cookRegisstrationDto.getImage());
+            cook.setImagePath(path);
+            System.out.println("image uploaded succfully ");
+        } catch (Exception e) {
+            System.out.println("Registration fali in image Uploading : "+ e.getMessage());
+            return null;
+        }
 
         //filling menu item to cook
         List<Menu> menuItem=menuRepository.findAllById(cookRegisstrationDto.getMenuId());

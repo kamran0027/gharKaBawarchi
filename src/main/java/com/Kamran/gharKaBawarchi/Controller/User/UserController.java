@@ -112,5 +112,14 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message","faled to Add cook to favourate list Or it is Alredy in Favourate List");
         return "redirect:/home/favourate";
     }
+    @GetMapping("/home/del-favourate/{id}")
+    public String removeFromFavourate(@PathVariable("id") Long cookId,RedirectAttributes redirectAttributes){
+        if (favourateCookService.removeFromFavourate(cookId)) {
+            redirectAttributes.addFlashAttribute("message","removed from Favourate");
+            return "redirect:/home/favourate";
+        }
+        redirectAttributes.addFlashAttribute("message","unable to remove due to technical issue");
+        return "redirect:/home/favourate";
+    }
 
 }

@@ -74,8 +74,11 @@
         <div class="row">
             <div class="col-md-4" th:each="cook : ${cooks}">
                 <div class="card mb-4">
-                    <div style="height:200px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#f8f9fa;">
-                        <img src="/images/ana.jpg" class="img-fluid" alt="ana de Armas" style="max-height:100%; width:auto; object-fit:contain;">
+                    <div  th:if="${cook.imagePath!=null}" style="height:200px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#f8f9fa;">
+                            <img th:src="@{${cook.imagePath}}" class="img-fluid" alt="image of Cook" style="max-height:100%; width:auto; object-fit:contain;">
+                        
+                    </div>
+                        <!-- <img src="/images/ana.jpg" class="img-fluid" alt="image of Cook" style="max-height:100%; width:auto; object-fit:contain;"> -->
                     </div>
                     <div class="card-body">
                         <h5 class="card-title" th:text="${cook.cookName}"></h5>

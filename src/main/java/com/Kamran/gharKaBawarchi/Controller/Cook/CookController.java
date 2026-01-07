@@ -113,7 +113,7 @@ public class CookController {
 
         return "cook_menuItem";
     }
-    @GetMapping("/menuItem/add-menu")
+    @GetMapping("/home/menuItem/add-menu")
     public String addMenuItem(Model model){
         MenuDto menuDto=new MenuDto();
         menuDto.setMenuId(null);
@@ -122,7 +122,7 @@ public class CookController {
         return "menuItem-Add-form";
     }
 
-    @PostMapping("/menuItem/save")
+    @PostMapping("/home/menuItem/save")
     public String saveMenuItem(MenuDto menuDto, RedirectAttributes redirectAttributes){
             System.out.println("************************");
             System.out.println(menuDto.getMenuItemName());

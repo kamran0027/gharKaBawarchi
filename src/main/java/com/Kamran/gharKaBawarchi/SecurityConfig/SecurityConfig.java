@@ -26,9 +26,10 @@ public class SecurityConfig {
             //configuration end point authorization
             .authorizeHttpRequests( auth -> auth
                                     //public end point
-                                    .requestMatchers("/login","/cook/login","/register","/cook/register","/css/**", "/js/**").permitAll()
+                                    .requestMatchers("/login","/cook/login","/admin/**","/register","/cook/register","/css/**", "/js/**").permitAll()
                                     //role bases end point
                                     .requestMatchers("/home/**").hasRole("USER")
+                                    // .requestMatchers("/admin/**").hasRole("ADMIN")
                                     .requestMatchers("/cook/home/**").hasRole("COOK")
                                     //all other required authentication
                                     .anyRequest().authenticated()

@@ -1,6 +1,9 @@
 package com.Kamran.gharKaBawarchi.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -45,5 +48,21 @@ public class FavourateCookService {
             return false;
         }
 
+    }
+    public boolean removeFromFavourate(Long cookId){
+        try {
+            Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+            String userName=authentication.getName();
+            Users user=userService.getUser(userName);
+            FavouriteCook favouriteCook=favouriteCookRepository.findByUserAndCookId(user, cookId).get();
+            if (favouriteCook!=null) {
+                favouriteCookRepository.delete(favouriteCook);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }

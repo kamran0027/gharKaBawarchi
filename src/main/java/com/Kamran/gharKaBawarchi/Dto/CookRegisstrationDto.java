@@ -2,6 +2,8 @@ package com.Kamran.gharKaBawarchi.Dto;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import lombok.Setter;
 public class CookRegisstrationDto {
     private String cookName;
     private String cookEmail;
+    private MultipartFile image;
     private String specialization;
     private int experienceYears;
     private String cookPassword;

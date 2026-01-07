@@ -16,7 +16,7 @@
         </div>
 
         <!-- Registration Form -->
-        <form th:action="@{/cook/register}" th:object="${cookDto}" method="post">
+        <form th:action="@{/cook/register}" th:object="${cookDto}" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="fullName" class="form-label">Name:</label>
                 <input type="text" th:field="*{cookName}" id="fullName" class="form-control" placeholder="Enter your full name" required />
@@ -30,6 +30,10 @@
             <div class="mb-3">
                 <label for="password" class="form-label">Password:</label>
                 <input type="password" th:field="*{cookPassword}" id="password" class="form-control" placeholder="Enter your password" required />
+            </div>
+            <div class="mb-3">
+                <label for="profileImage" class="form-label">Profile Image:</label>
+                <input type="file" th:field="*{image}" id="image" class="form-control" accept="image/*" />
             </div>
 
             <div class="mb-3">

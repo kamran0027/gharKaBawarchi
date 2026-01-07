@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Bookings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-weight: 700;
+            color: #343a40;
+        }
+        .booking-card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+            border-radius: 8px;
+            background: #fff;
+        }
+        .card-header {
+            background-color: #0d6efd;
+            color: white;
+            font-weight: 600;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .card-body p {
+            margin-bottom: 8px;
+        }
+        .menu-items {
+            display: none;
+            margin-top: 15px;
+        }
+        .btn-view-menu {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleMenuItems(id) {
+            const menuSection = document.getElementById('menuItems-' + id);
+            if (menuSection.style.display === 'none' || menuSection.style.display === '') {
+                menuSection.style.display = 'block';
+            } else {
+                menuSection.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>User Bookings</h1>
+
+    <div th:if="${#lists.isEmpty(bookings)}" class="alert alert-info">
+        No bookings found for this user.
+    </div>
+    <div th:if="${message}" class="alert alert-info">
+        <p th:text="${message}"></p>
+    </div>
+
+    <!-- add a search booking by booking id and customer name  -->
+    <div class="mb-3">
+        <form th:action="@{/admin/view-bookings/search}" method="get">
+            <input type="text"  name="keyword" placeholder="Search by Booking ID" th:value="${keyword}" class="form-control">
+            <button type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+    </div>
+
+    <div th:each="booking : ${bookings}" class="booking-card card">
+        <div class="card-header">
+            Booking ID: <span th:text="${booking.id}"></span><br>
+            Cook Name: <span th:text="${booking.cook.cookName}"></span><br>
+            Customer Name: <span th:text="${booking.customerName}"></span>
+        </div>
+        <div class="card-body">
+            <p><strong>Status:</strong> <span th:text="${booking.status}"></span></p>
+            <p><strong>Total Amount:</strong> ₹<span th:text="${booking.totalAmount}"></span></p>
+            <!-- <p><strong>Customer Name:</strong> <span th:text="${booking.customerName}"></span></p> -->
+            <p><strong>Number of People:</strong> <span th:text="${booking.numberOfPeople}"></span></p>
+            <!-- <p><strong>Cook:</strong> <span th:text="${booking.cook.cookName}"></span></p> -->
+            <p><strong>Booking date</strong> <span th:text="${booking.timeSlot.date}"></span></p>
+            <p><strong>Start time</strong> <span th:text="${booking.timeSlot.startTime}"></span></p>
+            <p><strong>End time</strong> <span th:text="${booking.timeSlot.endTime}"></span></p>
+            <a th:href="@{'/home/book/cancle'(bookingId=${booking.id})}" class="btn btn-success btn-sm">Cancle Booking</a>
+
+
+            <button type="button" class="btn btn-primary btn-view-menu"
+                th:attr="onclick='toggleMenuItems(' + ${booking.Id} + ')'">
+                View Menu Items
+            </button>
+
+            <div class="menu-items" th:attr="id='menuItems-' + ${booking.Id}">
+                <h5 class="mt-3">Menu Items:</h5>
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Menu ID</th>
+                            <th>Menu Name</th>
+                            <th>Price (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="menu : ${booking.menuItems}">
+                            <td th:text="${menu.menuId}"></td>
+                            <td th:text="${menu.menuName}"></td>
+                            <td th:text="${menu.price}"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>total Amount</td>
+                            <td th:text="${booking.totalAmount}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -45,6 +45,8 @@ public class Cook {
     private String cookPassword;
     private String contactInfo;
 
+    private String imagePath;
+
     @Enumerated(EnumType.STRING)
     private Roles role;
 
