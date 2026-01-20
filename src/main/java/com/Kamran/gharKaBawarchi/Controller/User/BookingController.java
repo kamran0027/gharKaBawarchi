@@ -55,10 +55,13 @@ public class BookingController {
     }
 
     @PostMapping("/submit")
-    public String bookingCook(@ModelAttribute BookingDto bookingDto,Model model,RedirectAttributes redirectAttributes){
+    public String bookingCook(@ModelAttribute BookingDto bookingDto,Model model,RedirectAttributes redirectAttributes) throws Exception{
         Boolean isBooked=false;
         isBooked=bookingService.creatBooking(bookingDto);
         Cook cook=cookService.getCookById(bookingDto.getCookId()).orElse(null);
+        System.out.println("***********************");
+        System.out.println(bookingDto.getPaymentMode());
+        System.out.println("***************");
 
         if (isBooked) {
             model.addAttribute("booking",bookingDto);
@@ -93,8 +96,9 @@ public class BookingController {
         return "cook_calender";
     }
 
-    @GetMapping("/cancle")
+    @GetMapping("/cancel")
     public String cancleBooking(@RequestParam Long bookingId, RedirectAttributes redirectAttributes){
+        System.out.println("***************************************");
         if (bookingService.cancleBooking(bookingId)) {
             redirectAttributes.addFlashAttribute("message","Booking cancle");
             return "redirect:/home/order";

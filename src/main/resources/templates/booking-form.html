@@ -36,8 +36,14 @@
                         th:value="${#temporals.format(slot.startTime, 'hh:mm a')} + ' - ' + ${#temporals.format(slot.endTime, 'hh:mm a')}"
                         readonly>
             </div>
+        <!-- // hidden input  -->
+         <!-- Razorpay hidden fields -->
+        <!-- <input type="hidden" th:field="*{paymentMode}" id="paymentModeInput"> -->
+        <input type="hidden" th:field="*{razorpayPaymentId}" id="razorpayPaymentId">
+        <input type="hidden" th:field="*{razorpayOrderId}" id="razorpayOrderId">
+        <input type="hidden" th:field="*{razorpaySignature}" id="razorpaySignature">
 
-            <!-- real input fiels start from here -->
+            <!-- real input fields start from here -->
         <div class="mb-3">
             <label for="customerName" class="form-label">Customer Name:</label>
             <input type="text" id="customerName" th:field="*{customerName}" class="form-control" required />
@@ -72,8 +78,19 @@
 
         <p id="totalAmount" class="fs-5 fw-bold">Total: ₹0</p>
         <input type="hidden" id="totalAmountInput" th:field="*{totalAmount}" />
+        <div class="mb-3">
+            <label class="form-label">Payment Method</label><br>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="paymentMode" value="COD" checked>
+                <label class="form-check-label"> Cash on Delivery (COD)</label>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Book Now</button>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="paymentMode" value="ONLINE">
+                <label class="form-check-label"> Pay Online (Razorpay) </label>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="submitBooking()"> Book Now </button>
     </form>
 </div>
 
@@ -82,7 +99,7 @@
 
 <script>
     // Bootstrap validation example (optional)
-    (() => {
+    (() => { COD COD
         'use strict'
 
         const forms = document.querySelectorAll('.needs-validation')
@@ -97,6 +114,68 @@
             }, false)
         })
     })();
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function submitBooking() {
+
+    const paymentMode = document.querySelector('input[name="paymentMode"]:checked').value;
+    const totalAmount = parseFloat(document.getElementById("totalAmountInput").value);
+
+    if (totalAmount <= 0) {
+        alert("Select food items");
+        return;
+    }
+
+    // COD
+    if (paymentMode === "COD") {
+        document.querySelector("form").submit();
+        return;
+    }
+
+    // ONLINE
+    fetch("/home/payment/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ amount: totalAmount })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error("Server error");
+        }
+        return res.json();
+    })
+    .then(data => {
+        console.log("Order created:", data);
+
+        const options = {
+            key: data.key,
+            amount: data.amount,
+            currency: "INR",
+            order_id: data.orderId,
+            name: "Ghar ka Bawarchi",
+            handler: function (response) {
+
+                const form = document.querySelector("form");
+
+                //document.getElementById("paymentModeInput").value = "ONLINE";
+                document.getElementById("razorpayPaymentId").value = response.razorpay_payment_id;
+                document.getElementById("razorpayOrderId").value = response.razorpay_order_id;
+                document.getElementById("razorpaySignature").value = response.razorpay_signature;
+
+                form.submit();
+            }
+        };
+
+        new Razorpay(options).open();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Unable to start payment. Check console.");
+    });
+}
+
 </script>
 
 </body>

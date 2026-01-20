@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Booking {
 
     @Id
@@ -39,7 +42,14 @@ public class Booking {
     private String customerName;
     private int numberOfPeople;
 
-    private LocalDateTime bookingTIme;
+    private String paymentStatus; // e.g., "PENDING", "COD", "PAID", "FAILED"
+
+    private String razorpayOrderId;
+    private String razorpayPaymentId;
+    private String razorpaySignature;
+    private LocalDateTime bookingTime;
+
+
 
     @ManyToMany()
     @JoinTable(

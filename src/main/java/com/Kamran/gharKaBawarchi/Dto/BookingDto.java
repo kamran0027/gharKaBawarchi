@@ -17,6 +17,10 @@ public class BookingDto {
     private Double totalAmount;
     private String customerName;
     private int numberOfPeople;
+    private String paymentMode; // COD | ONLINE
+    private String razorpayPaymentId;
+    private String razorpayOrderId;
+    private String razorpaySignature;
     private List<Long> foodItemIds;
     
 }

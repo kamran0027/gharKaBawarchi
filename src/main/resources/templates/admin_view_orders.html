@@ -78,7 +78,7 @@
         <div class="card-body">
             <p><strong>Status:</strong> <span th:text="${booking.status}"></span></p>
             <p><strong>Total Amount:</strong> ₹<span th:text="${booking.totalAmount}"></span></p>
-            <!-- <p><strong>Customer Name:</strong> <span th:text="${booking.customerName}"></span></p> -->
+            <p><strong>Payment Status:</strong> <span th:text="${booking.paymentStatus}"></span></p>
             <p><strong>Number of People:</strong> <span th:text="${booking.numberOfPeople}"></span></p>
             <!-- <p><strong>Cook:</strong> <span th:text="${booking.cook.cookName}"></span></p> -->
             <p><strong>Booking date</strong> <span th:text="${booking.timeSlot.date}"></span></p>
@@ -103,10 +103,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="menu : ${booking.menuItems}">
-                            <td th:text="${menu.menuId}"></td>
-                            <td th:text="${menu.menuName}"></td>
-                            <td th:text="${menu.price}"></td>
+                        <tr th:each="menuDto : ${booking.menuItems}">
+                            <td th:text="${menuDto.menuId}"></td>
+                            <td th:text="${menuDto.menuName}"></td>
+                            <td th:text="${menuDto.price}"></td>
                         </tr>
                         <tr>
                             <td></td>

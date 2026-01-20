@@ -70,11 +70,12 @@
             <p><strong>Total Amount:</strong> ₹<span th:text="${booking.totalAmount}"></span></p>
             <p><strong>Customer Name:</strong> <span th:text="${booking.customerName}"></span></p>
             <p><strong>Number of People:</strong> <span th:text="${booking.numberOfPeople}"></span></p>
+            <p><strong>Payment Status:</strong> <span th:text="${booking.paymentStatus}"></span></p>
             <p><strong>Cook:</strong> <span th:text="${booking.cook.cookName}"></span></p>
             <p><strong>Booking date</strong> <span th:text="${booking.timeSlot.date}"></span></p>
             <p><strong>Start time</strong> <span th:text="${booking.timeSlot.startTime}"></span></p>
             <p><strong>End time</strong> <span th:text="${booking.timeSlot.endTime}"></span></p>
-            <a th:href="@{'/home/book/cancle'(bookingId=${booking.id})}" class="btn btn-success btn-sm">Cancle Booking</a>
+            <a th:href="@{'/home/book/cancel'(bookingId=${booking.id})}" class="btn btn-success btn-sm">Cancel Booking</a>
 
 
             <button type="button" class="btn btn-primary btn-view-menu"

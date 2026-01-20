@@ -41,6 +41,7 @@ public class Cook {
     private String specialization;
     private int experienceYears;
     private double rating;
+    private double totalEarning;
     private String cookEmail;
     private String cookPassword;
     private String contactInfo;

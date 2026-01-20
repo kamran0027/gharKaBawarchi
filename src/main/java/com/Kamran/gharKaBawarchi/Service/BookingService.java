@@ -1,15 +1,22 @@
 package com.Kamran.gharKaBawarchi.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
+
+import org.hibernate.type.descriptor.jdbc.LocalDateTimeJdbcType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.Kamran.gharKaBawarchi.Dto.BookingDto;
+
 import com.Kamran.gharKaBawarchi.Entity.Booking;
 import com.Kamran.gharKaBawarchi.Entity.Cook;
 import com.Kamran.gharKaBawarchi.Entity.Menu;
@@ -20,6 +27,12 @@ import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CookRepository;
 import com.Kamran.gharKaBawarchi.Respository.MenuRepository;
 import com.Kamran.gharKaBawarchi.Respository.TimeSlotRepository;
+import com.Kamran.gharKaBawarchi.cacheDto.BookingCacheDto;
+import com.Kamran.gharKaBawarchi.cacheDto.CookDto;
+import com.Kamran.gharKaBawarchi.cacheDto.MenuDto;
+import com.Kamran.gharKaBawarchi.cacheDto.TimeSlotDto;
+import com.Kamran.gharKaBawarchi.payment.RazorPayConfig;
+import com.razorpay.Utils;
 
 @Service
 public class BookingService {
@@ -38,8 +51,11 @@ public class BookingService {
     @Autowired
     private  TimeSlotRepository timeSlotRepository;
 
+    @Autowired
+    private RazorPayConfig razorPayConfig;
+
     
-    public Boolean creatBooking(BookingDto bookingDto){
+    public Boolean creatBooking(BookingDto bookingDto) throws Exception{
         Booking booking=new Booking();
         Authentication auth=SecurityContextHolder.getContext().getAuthentication();
         String userEmail=auth.getName();
@@ -74,6 +90,26 @@ public class BookingService {
         booking.setNumberOfPeople(bookingDto.getNumberOfPeople());
         booking.setStatus(BookingStatus.PENDING);
 
+
+        if ("ONLINE".equals(bookingDto.getPaymentMode())) {
+            String payload=bookingDto.getRazorpayOrderId()
+                            + "|"+bookingDto.getRazorpayPaymentId();
+            boolean verified=Utils.verifySignature(payload,bookingDto.getRazorpaySignature(),razorPayConfig.getKeySecret());
+            if(!verified){
+                System.out.println("Payment verification failed");
+                return false;
+               
+            }
+            booking.setPaymentStatus("PAID");
+            booking.setRazorpayPaymentId(bookingDto.getRazorpayPaymentId());
+            booking.setRazorpayOrderId(bookingDto.getRazorpayOrderId());
+
+        }
+        else{
+            booking.setPaymentStatus("COD");
+        }
+        booking.setBookingTime(java.time.LocalDateTime.now());
+
         bookingRepository.save(booking);
         return true;
     }
@@ -95,5 +131,44 @@ public class BookingService {
         return true;
         
         
+    }
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+    @Cacheable(value ="bookings", key="#p0", unless = "#result == null")
+    public BookingCacheDto getBookingById(String id){
+        System.out.println("***********************");
+        System.out.println("fetching from db");
+        //Thread.sleep(5000);
+        System.out.println("*******************");
+        Booking booking= bookingRepository.findById(Long.parseLong(id)).orElse(null);
+
+        if(booking==null){
+            return null;
+        }
+        List<MenuDto> menuDtos = booking.getMenuItems().stream()
+                                            .map(menu -> new MenuDto(
+                                                menu.getMenuId(),
+                                                menu.getMenuName(),
+                                                menu.getPrice()
+                                            )).toList();
+        return new BookingCacheDto(
+                        booking.getId(),
+                        booking.getCustomerName(),
+                        booking.getStatus(),
+                        booking.getTotalAmount(),
+                        booking.getPaymentStatus(),
+                        booking.getNumberOfPeople(),
+                        new CookDto(
+                            booking.getCook().getCookId(),
+                            booking.getCook().getCookName()
+                        ),
+                        new TimeSlotDto(
+                            booking.getTimeSlot().getDate(),
+                            booking.getTimeSlot().getStartTime(),
+                            booking.getTimeSlot().getEndTime()
+                        ),
+                        menuDtos
+        );
     }
 }
