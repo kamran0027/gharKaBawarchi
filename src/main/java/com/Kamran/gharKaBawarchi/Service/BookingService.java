@@ -11,6 +11,7 @@ import org.hibernate.type.descriptor.jdbc.LocalDateTimeJdbcType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import com.Kamran.gharKaBawarchi.Entity.Menu;
 import com.Kamran.gharKaBawarchi.Entity.TimeSlot;
 import com.Kamran.gharKaBawarchi.Entity.Users;
 import com.Kamran.gharKaBawarchi.Entity.Enum.BookingStatus;
+import com.Kamran.gharKaBawarchi.Quartz.BookingPlacedEvent;
 import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CookRepository;
 import com.Kamran.gharKaBawarchi.Respository.MenuRepository;
@@ -53,6 +55,9 @@ public class BookingService {
 
     @Autowired
     private RazorPayConfig razorPayConfig;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     
     public Boolean creatBooking(BookingDto bookingDto) throws Exception{
@@ -110,7 +115,9 @@ public class BookingService {
         }
         booking.setBookingTime(java.time.LocalDateTime.now());
 
-        bookingRepository.save(booking);
+        Booking savedBooking=bookingRepository.save(booking);
+
+        publisher.publishEvent(new BookingPlacedEvent(this, savedBooking));
         return true;
     }
 
@@ -170,5 +177,10 @@ public class BookingService {
                         ),
                         menuDtos
         );
+    }
+
+    public List<Booking> getallBookingByCookUserName(String username){
+        Cook cook=cookRepository.findByCookEmail(username).get();
+        return bookingRepository.findByCook(cook);
     }
 }

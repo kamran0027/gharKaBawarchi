@@ -27,7 +27,7 @@ public class SecurityConfig {
             .authorizeHttpRequests( auth -> auth
                                     //public end point
                                     .requestMatchers("/login","/cook/login","/admin/**","/register","/cook/register","/css/**", "/js/**").permitAll()
-                                    //role bases end point
+                                    //role based end point 
                                     .requestMatchers("/home/**").hasRole("USER")
                                     // .requestMatchers("/admin/**").hasRole("ADMIN")
                                     .requestMatchers("/cook/home/**").hasRole("COOK")

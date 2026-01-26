@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h2>Order Placed Successfully 🎉</h2>
+
+<p>Hello,</p>
+<p>Your order with ID
+<b th:text="${booking_id}"></b> has been placed successfully.</p>
+<p>Cook Name: <b th:text="${cook_name}"></b></p>
+<p>Booking Time: <b th:text="${time}"></b></p>
+<p>Total Amount: <b th:text="${totalAmount}"></b></p>
+<p>Number of People: <b th:text="${numberOfPeople}"></b></p>
+<table th:if="${menuItem != null}">
+    <tr>
+        <th>Menu Item</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="item : ${menuItem}">
+        <td th:text="${item.menuName}"></td>
+        <td th:text="${item.price}"></td>
+    </tr>
+</table>
+
+<p>Thank you for shopping with us!</p>
+
+</body>
+</html>

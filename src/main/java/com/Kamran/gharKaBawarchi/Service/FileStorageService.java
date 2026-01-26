@@ -92,5 +92,40 @@ public class FileStorageService {
             return false;
         }
     }
-    
-}
+
+    public String updateFile(String existingWebPath, MultipartFile newFile, long maxBytes) {
+        // validate new image
+        validateImage(newFile, maxBytes);
+
+        if (existingWebPath == null || existingWebPath.isBlank()) {
+            throw new IllegalArgumentException("Existing file path is required");
+        }
+
+        try {
+            String prefix = "/uploads/";
+            String filename = existingWebPath.startsWith(prefix)
+                ? existingWebPath.substring(prefix.length())
+                    : Paths.get(existingWebPath).getFileName().toString();
+
+            Path target = this.uploadDir.resolve(filename).normalize();
+
+            // safety check (prevents path traversal)
+            if (!target.startsWith(this.uploadDir)) {
+                throw new RuntimeException("Invalid file path");
+            }
+
+            // overwrite existing file
+            try (InputStream in = newFile.getInputStream()) {
+                Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            // path stays the same
+            return existingWebPath;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update file", e);
+        }
+    }
+}   
+
+

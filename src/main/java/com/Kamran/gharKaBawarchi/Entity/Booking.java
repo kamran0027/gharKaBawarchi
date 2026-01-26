@@ -36,7 +36,7 @@ public class Booking {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    private BookingStatus status;  //PENDING, CONFIRMED, INPROGRESS, CANCELLED, COMPLETED
     
     private Double totalAmount;
     private String customerName;

@@ -18,5 +18,6 @@ public class CookProfileDto {
     private Double rating;
     private int experience;
     private String specialization;
+    private String imagePath;
 
 }

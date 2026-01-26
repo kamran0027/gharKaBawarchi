@@ -24,6 +24,7 @@ import com.Kamran.gharKaBawarchi.Respository.BookingRepository;
 import com.Kamran.gharKaBawarchi.Respository.CookRepository;
 import com.Kamran.gharKaBawarchi.Respository.MenuRepository;
 import com.Kamran.gharKaBawarchi.Respository.TimeSlotRepository;
+import com.Kamran.gharKaBawarchi.Service.BookingService;
 import com.Kamran.gharKaBawarchi.Service.CityService;
 import com.Kamran.gharKaBawarchi.Service.CookService;
 import com.Kamran.gharKaBawarchi.Service.MenuService;
@@ -41,6 +42,9 @@ public class CookController {
     private CookRepository cookRepository;
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired 
+    BookingService bookingService;
 
     @Autowired
     private MenuService menuService;
@@ -162,5 +166,19 @@ public class CookController {
         redirectAttributes.addFlashAttribute("message","failed to delete MenuItem");
         return "redirect:/cook/menuItem";
     }
+
+
+    //view orders -> upcoming, and completed, all
+    //1-> all
+    @GetMapping("/orders")
+    public String showAllOrders(Model model){
+        Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+        String userName=auth.getName();
+        List<Booking> bookings=bookingService.getallBookingByCookUserName(userName);
+
+        model.addAttribute("bookings", bookings);
+        return "cook_view_booking";
+
+    }  
 
 }

@@ -34,7 +34,7 @@ public class profileController {
         CookProfileDto cookProfileDto=new CookProfileDto(cooks.getCookName(),cooks.getCookEmail()
                                                         ,cooks.getCookPassword(),cooks.getContactInfo()
                                                         ,cooks.getRating(),cooks.getExperienceYears()
-                                                        ,cooks.getSpecialization());
+                                                        ,cooks.getSpecialization(),cooks.getImagePath());
         model.addAttribute("cook", cookProfileDto);
         return "cook_profile";
     }

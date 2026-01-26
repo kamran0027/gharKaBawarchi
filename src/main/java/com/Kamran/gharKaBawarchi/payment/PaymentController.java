@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +29,7 @@ public class PaymentController {
     }
 
     @PostMapping("/create-order")
-    public ResponseEntity<Map<String, Object>> createOrder(
-            @RequestParam double amount
-    ) {
+    public ResponseEntity<Map<String, Object>> createOrder(@RequestParam double amount) {
         try {
             long amountInPaisa = (long) (amount * 100);
 

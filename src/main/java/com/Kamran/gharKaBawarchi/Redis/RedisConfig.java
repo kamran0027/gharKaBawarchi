@@ -16,8 +16,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import io.lettuce.core.json.JsonType;
-
 @Configuration
 @EnableCaching
 public class RedisConfig {

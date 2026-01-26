@@ -1,5 +1,6 @@
 package com.Kamran.gharKaBawarchi.Respository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,11 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findByUsers(Users user);
     List<Booking> findByCook(Cook cook);
     List<Booking> findByStatus(BookingStatus status);
+
+    List<Booking> findByStatusAndBookingTimeBefore(BookingStatus status, LocalDateTime bookingTime);
+
+
+    
 
     @Query("SELECT DISTINCT b FROM Booking b LEFT JOIN FETCH b.menuItems WHERE b.users.userId = :userId")
     List<Booking> findBookingsByUserId(Long userId);

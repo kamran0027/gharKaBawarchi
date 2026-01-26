@@ -134,6 +134,7 @@ public class AuthController {
             return "redirect:/cook/home";
         } catch (AuthenticationException ex) {
             model.addAttribute("error", "Invalid username or password");
+            model.addAttribute("loginDto", new LogInDto());
             return "cook_login";
         }
     }

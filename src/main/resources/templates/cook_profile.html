@@ -37,6 +37,9 @@
     <div class="container mt-5">
         <h2>Cook Profile</h2>
         <div class="card">
+            <div th:if="${cook.imagePath!=null}" style="height:200px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#f8f9fa;">
+                <img th:src="@{${cook.imagePath}}" class="img-fluid" alt="image of Cook" style="max-height:100%; width:auto; object-fit:contain;">           
+            </div>
             <div class="card-body">
                 <h5 class="card-title" th:text="${cook.fullName}">Full Name</h5>
                 <p class="card-text"><strong>Email:</strong> <span th:text="${cook.email}"></span></p>
